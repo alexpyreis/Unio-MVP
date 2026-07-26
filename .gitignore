@@ -1,0 +1,44 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Firebase
+firebase-debug.log
+.firebase/
+*-firebase-adminsdk-*.json
+serviceAccountKey.json
+
+# Go
+backend/bin/
+backend/tmp/
+*.exe
+*.test
+vendor/
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+build/
+.turbo/
+.vercel/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test / coverage
+coverage/
+*.out
