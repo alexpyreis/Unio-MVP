@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,23 +20,37 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 export default function Home() {
+  const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<null | { email: string }>(null);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    auth.onAuthStateChanged((currentUser) => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser ? { email: currentUser.email ?? "" } : null);
     });
+
+    return () => unsubscribe();
   }, []);
 
-  const handleSignIn = async () => {
+  const handleAuth = async () => {
+    setLoading(true);
+    setMessage("");
+
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      setMessage("Login realizado com sucesso.");
+      if (mode === "login") {
+        await signInWithEmailAndPassword(auth, email, password);
+        setMessage("Login realizado com sucesso.");
+      } else {
+        await createUserWithEmailAndPassword(auth, email, password);
+        setMessage("Conta criada com sucesso. Você já está conectado.");
+      }
     } catch (error: any) {
-      setMessage(error.message || "Erro no login.");
+      setMessage(error.message || "Erro no processo de autenticação.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,22 +73,31 @@ export default function Home() {
     });
 
     const data = await response.json();
-    setMessage(JSON.stringify(data));
+    setMessage(JSON.stringify(data, null, 2));
   };
 
   return (
     <main style={{ maxWidth: 560, margin: "0 auto", padding: 24, fontFamily: "Arial, sans-serif" }}>
       <h1>Unio MVP</h1>
-      <p>Login com Firebase Authentication</p>
+      <p>Autenticação com Firebase</p>
 
       {user ? (
-        <div>
-          <p>Bem-vindo, {user.email}</p>
+        <div style={{ display: "grid", gap: 12, maxWidth: 420 }}>
+          <p>Bem-vindo, <strong>{user.email}</strong></p>
           <button onClick={handleSignOut}>Sair</button>
           <button onClick={callBackendProfile}>Ver perfil protegido</button>
         </div>
       ) : (
         <div style={{ display: "grid", gap: 12, maxWidth: 320 }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button type="button" onClick={() => setMode("login")} disabled={mode === "login"}>
+              Login
+            </button>
+            <button type="button" onClick={() => setMode("signup")} disabled={mode === "signup"}>
+              Signup
+            </button>
+          </div>
+
           <input
             type="email"
             placeholder="Email"
@@ -82,12 +110,14 @@ export default function Home() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button onClick={handleSignIn}>Entrar</button>
+          <button onClick={handleAuth} disabled={loading || !email || !password}>
+            {mode === "login" ? "Entrar" : "Criar conta"}
+          </button>
         </div>
       )}
 
-      <div style={{ marginTop: 24 }}>
-        <p>{message}</p>
+      <div style={{ marginTop: 24, whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
+        {message}
       </div>
     </main>
   );

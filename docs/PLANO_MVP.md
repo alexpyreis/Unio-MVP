@@ -14,8 +14,8 @@ Lançar um app funcional para católicos no Brasil: cadastro, aprovação, disco
 ## Fases
 
 ### Fase 1 — Fundação
-- [ ] Projeto Firebase configurado
-- [ ] Backend Go: health check + auth middleware
+- [x] Projeto Firebase configurado
+- [x] Backend Go: health check + auth middleware
 - [ ] Frontend: landing, signup, login
 - [ ] Bootstrap de usuário no Firestore
 

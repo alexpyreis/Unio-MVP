@@ -36,6 +36,29 @@ Unio-MVP/
 - Mantenha os arquivos em UTF-8 e siga as regras do [.editorconfig](.editorconfig).
 - Para alterações maiores, use branches e abra um Pull Request para a branch main.
 
+## Execução local
+
+### Backend
+
+```bash
+cd backend
+go mod tidy
+go run .
+```
+
+### Frontend
+
+```bash
+cd frontend-app
+npm install
+npm run dev
+```
+
+### Observações
+
+- O backend usa Firebase Auth e Cloudinary scaffold.
+- O frontend usa Firebase Web SDK e faz proxy para o backend via `/api/profile`.
+
 ## Status
 
-Repositório inicial — próximo passo: configurar Firebase e scaffold das aplicações.
+O projeto agora está unificado em `main` com backend e frontend funcionais para autenticação.
