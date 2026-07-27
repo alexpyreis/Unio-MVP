@@ -12,8 +12,8 @@ go mod tidy
 
 ```bash
 export PORT=8080
-export FIREBASE_SERVICE_ACCOUNT_JSON='{"type":"service_account",...}'
 export CLOUDINARY_CLOUD_NAME=seu-cloud-name
+export FIREBASE_SERVICE_ACCOUNT_JSON='{"type":"service_account",...}'
 ```
 
 - Se preferir usar um arquivo local, defina `GOOGLE_APPLICATION_CREDENTIALS=/caminho/para/serviceAccountKey.json` em vez de `FIREBASE_SERVICE_ACCOUNT_JSON`.

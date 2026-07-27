@@ -31,6 +31,11 @@ Unio-MVP/
 - [Estrutura Front / Back / Database](docs/ESTRUTURA.md)
 - [Plano MVP](docs/PLANO_MVP.md)
 
+## Contribuição
+
+- Mantenha os arquivos em UTF-8 e siga as regras do [.editorconfig](.editorconfig).
+- Para alterações maiores, use branches e abra um Pull Request para a branch main.
+
 ## Status
 
 Repositório inicial — próximo passo: configurar Firebase e scaffold das aplicações.
